@@ -1,0 +1,10 @@
+[package]
+name = "Reversi-Board-Game"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[lib]
+name = "reversi"
+path = "src/lib.rs"
