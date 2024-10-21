@@ -22,21 +22,9 @@ struct Config {
 fn main() {
     // Set up the command-line interface using clap
     let matches = Command::new("grep")
-        .version("1.0")
-        .about("Search for patterns in files")
-        .override_usage("Usage: grep [OPTIONS] <pattern> <files...>")
+        .override_usage("grep [OPTIONS] <pattern> <files...>")
+        .help_template("{usage-heading}{usage}\n{all-args}")
         // Define command-line arguments
-        .arg(
-            Arg::new("pattern")
-                .help("The pattern to search for")
-                .required(true),
-        )
-        .arg(
-            Arg::new("files")
-                .help("The files or directories to search in")
-                .required(true)
-                .num_args(1..),
-        )
         .arg(
             Arg::new("ignore_case")
                 .short('i')
