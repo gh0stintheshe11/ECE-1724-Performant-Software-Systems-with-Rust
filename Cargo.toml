@@ -7,5 +7,7 @@ edition = "2021"
 clap = { version = "4.1.8", features = ["derive"] } # Parses command-line arguments and options for utility
 walkdir = "2.3" # Enables recursive directory traversal for searching through directories and subdirectories
 colored = "2.0" # Provides colored terminal output to highlight matched text
-glob = "0.3" # Expands wildcard file patterns (e.g., *.md) into lists of matching file paths
 regex = "1.7" # Performs pattern matching with regular expressions, supporting features like case-insensitive search
+
+[dev-dependencies]
+tempfile = "3.2" # for unit tests

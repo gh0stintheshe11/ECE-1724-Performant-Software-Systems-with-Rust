@@ -1,7 +1,6 @@
 // Import necessary libraries
 use clap::{Arg, ArgAction, Command}; // For parsing command-line arguments
 use colored::*; // For colored output
-use glob::glob; // For file pattern matching
 use regex::RegexBuilder; // For building regular expressions
 use std::fs::File; // For file operations
 use std::io::{self, BufRead, BufReader}; // For reading files
@@ -25,6 +24,17 @@ fn main() {
         .override_usage("grep [OPTIONS] <pattern> <files...>")
         .help_template("{usage-heading}{usage}\n{all-args}")
         // Define command-line arguments
+        .arg(
+            Arg::new("pattern")
+                .required(true)
+                .hide(true)
+        )
+        .arg(
+            Arg::new("files")
+                .required(true)
+                .hide(true)
+                .num_args(1..)
+        )
         .arg(
             Arg::new("ignore_case")
                 .short('i')
@@ -107,21 +117,27 @@ fn get_files(files: &[String], recursive: bool) -> Vec<String> {
         if recursive {
             // Use WalkDir for recursive search
             for entry in WalkDir::new(file_pattern) {
-                let entry = entry.unwrap();
-                if entry.file_type().is_file() {
-                    file_list.push(entry.path().display().to_string());
+                if let Ok(entry) = entry {
+                    if entry.file_type().is_file() {
+                        file_list.push(entry.path().display().to_string());
+                    }
                 }
             }
         } else {
-            // Use glob for non-recursive search
-            for entry in glob(file_pattern).expect("Failed to read glob pattern") {
-                match entry {
-                    Ok(path) => {
-                        if path.is_file() {
-                            file_list.push(path.display().to_string());
+            // Use std::fs for non-recursive search
+            if let Ok(metadata) = std::fs::metadata(file_pattern) {
+                if metadata.is_file() {
+                    file_list.push(file_pattern.to_string());
+                } else if metadata.is_dir() {
+                    if let Ok(entries) = std::fs::read_dir(file_pattern) {
+                        for entry in entries {
+                            if let Ok(entry) = entry {
+                                if entry.file_type().map(|ft| ft.is_file()).unwrap_or(false) {
+                                    file_list.push(entry.path().display().to_string());
+                                }
+                            }
                         }
                     }
-                    Err(e) => eprintln!("Glob error: {:?}", e),
                 }
             }
         }
@@ -183,3 +199,300 @@ fn search_in_file(
     }
     Ok(())
 }
+
+
+// Unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use tempfile::TempDir;
+
+    fn create_test_file(content: &str) -> (TempDir, String) {
+        let dir = TempDir::new().unwrap();
+        let file_path = dir.path().join("grep.md");
+        fs::write(&file_path, content).unwrap();
+        (dir, file_path.to_str().unwrap().to_string())
+    }
+
+    fn get_test_content() -> String {
+        "## Search Utility\nIn this programming assignment, you are expected to implement a command-line utility that\nsearches for a specific pattern in one or multiple files, similar in spirit to the UNIX\n`grep` command.".to_string()
+    }
+
+    #[test]
+    fn test_basic_search() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        let config = Config {
+            pattern: "Utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: false,
+            recursive: false,
+            print_filename: false,
+            colored_output: false,
+        };
+        
+        let mut results = Vec::new();
+        search_in_file(&file_path, &config, &mut results).unwrap();
+        
+        assert_eq!(results, vec!["## Search Utility"]);
+
+        // Test for non-matching pattern
+        let config_no_match = Config {
+            pattern: "NonExistentPattern".to_string(),
+            ..config
+        };
+        
+        let mut results_no_match = Vec::new();
+        search_in_file(&file_path, &config_no_match, &mut results_no_match).unwrap();
+        
+        assert!(results_no_match.is_empty());
+    }
+
+    #[test]
+    fn test_case_insensitive_search() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        // Test case-insensitive search (on)
+        let config_insensitive = Config {
+            pattern: "utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: true,
+            line_number: false,
+            invert_match: false,
+            recursive: false,
+            print_filename: false,
+            colored_output: false,
+        };
+        
+        let mut results_insensitive = Vec::new();
+        search_in_file(&file_path, &config_insensitive, &mut results_insensitive).unwrap();
+        
+        assert_eq!(results_insensitive, vec!["## Search Utility", "In this programming assignment, you are expected to implement a command-line utility that"]);
+
+        // Test case-sensitive search (off)
+        let config_sensitive = Config {
+            pattern: "utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: false,
+            recursive: false,
+            print_filename: false,
+            colored_output: false,
+        };
+        
+        let mut results_sensitive = Vec::new();
+        search_in_file(&file_path, &config_sensitive, &mut results_sensitive).unwrap();
+        
+        assert_eq!(results_sensitive, vec!["In this programming assignment, you are expected to implement a command-line utility that"]);
+    }
+
+    #[test]
+    fn test_print_line_numbers() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        // Test with line numbers (on)
+        let config_with_numbers = Config {
+            pattern: "Utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: true,
+            invert_match: false,
+            recursive: false,
+            print_filename: false,
+            colored_output: false,
+        };
+        
+        let mut results_with_numbers = Vec::new();
+        search_in_file(&file_path, &config_with_numbers, &mut results_with_numbers).unwrap();
+        
+        assert_eq!(results_with_numbers, vec!["1: ## Search Utility"]);
+
+        // Test without line numbers (off)
+        let config_without_numbers = Config {
+            line_number: false,
+            ..config_with_numbers
+        };
+        
+        let mut results_without_numbers = Vec::new();
+        search_in_file(&file_path, &config_without_numbers, &mut results_without_numbers).unwrap();
+        
+        assert_eq!(results_without_numbers, vec!["## Search Utility"]);
+    }
+
+    #[test]
+    fn test_invert_match() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        // Test inverted match (on)
+        let config_inverted = Config {
+            pattern: "Utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: true,
+            recursive: false,
+            print_filename: false,
+            colored_output: false,
+        };
+        
+        let mut results_inverted = Vec::new();
+        search_in_file(&file_path, &config_inverted, &mut results_inverted).unwrap();
+        
+        assert_eq!(results_inverted, vec![
+            "In this programming assignment, you are expected to implement a command-line utility that",
+            "searches for a specific pattern in one or multiple files, similar in spirit to the UNIX",
+            "`grep` command."
+        ]);
+
+        // Test normal match (off)
+        let config_normal = Config {
+            invert_match: false,
+            ..config_inverted
+        };
+        
+        let mut results_normal = Vec::new();
+        search_in_file(&file_path, &config_normal, &mut results_normal).unwrap();
+        
+        assert_eq!(results_normal, vec!["## Search Utility"]);
+    }
+
+    #[test]
+    fn test_print_filenames() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        // Test with filename printing (on)
+        let config_with_filename = Config {
+            pattern: "Utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: false,
+            recursive: false,
+            print_filename: true,
+            colored_output: false,
+        };
+        
+        let mut results_with_filename = Vec::new();
+        search_in_file(&file_path, &config_with_filename, &mut results_with_filename).unwrap();
+        
+        assert!(results_with_filename[0].starts_with(&file_path));
+        assert!(results_with_filename[0].ends_with("## Search Utility"));
+
+        // Test without filename printing (off)
+        let config_without_filename = Config {
+            print_filename: false,
+            ..config_with_filename
+        };
+        
+        let mut results_without_filename = Vec::new();
+        search_in_file(&file_path, &config_without_filename, &mut results_without_filename).unwrap();
+        
+        assert_eq!(results_without_filename, vec!["## Search Utility"]);
+    }
+
+    #[test]
+    fn test_colored_output() {
+        let content = get_test_content();
+        let (_dir, file_path) = create_test_file(&content);
+        
+        // Test with colored output (on)
+        let config_colored = Config {
+            pattern: "Utility".to_string(),
+            files: vec![file_path.clone()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: false,
+            recursive: false,
+            print_filename: false,
+            colored_output: true,
+        };
+        
+        let mut results_colored = Vec::new();
+        search_in_file(&file_path, &config_colored, &mut results_colored).unwrap();
+        
+        assert!(results_colored[0].contains("\x1b["));  // ANSI escape code for colored output
+
+        // Test without colored output (off)
+        let config_not_colored = Config {
+            colored_output: false,
+            ..config_colored
+        };
+        
+        let mut results_not_colored = Vec::new();
+        search_in_file(&file_path, &config_not_colored, &mut results_not_colored).unwrap();
+        
+        assert!(!results_not_colored[0].contains("\x1b["));  // No ANSI escape code
+    }
+
+    #[test]
+    fn test_recursive_search() {
+        let temp_dir = TempDir::new().unwrap();
+        let tests_dir = temp_dir.path().join("tests");
+        let recursive_dir = tests_dir.join("recursive");
+        let file1_path = tests_dir.join("grep.md");
+        let file2_path = recursive_dir.join("grep.md");
+
+        std::fs::create_dir_all(&recursive_dir).unwrap();
+        std::fs::write(&file1_path, "## Search Utility").unwrap();
+        std::fs::write(&file2_path, "## Search Utility").unwrap();
+
+        // Test get_files function
+        let config_recursive = Config {
+            pattern: "Utility".to_string(),
+            files: vec![tests_dir.to_str().unwrap().to_string()],
+            ignore_case: false,
+            line_number: false,
+            invert_match: false,
+            recursive: true,
+            print_filename: true,
+            colored_output: false,
+        };
+
+        let files_recursive = get_files(&config_recursive.files, config_recursive.recursive);
+        assert_eq!(files_recursive.len(), 2, "Expected 2 files in recursive search, found {}", files_recursive.len());
+        assert!(files_recursive.contains(&file1_path.to_str().unwrap().to_string()), "Missing file: {:?}", file1_path);
+        assert!(files_recursive.contains(&file2_path.to_str().unwrap().to_string()), "Missing file: {:?}", file2_path);
+
+        // Test search_in_file function
+        let mut results_recursive = Vec::new();
+        for file in &files_recursive {
+            search_in_file(file, &config_recursive, &mut results_recursive).unwrap();
+        }
+
+        assert_eq!(results_recursive.len(), 2, "Expected 2 results in recursive search, found {}", results_recursive.len());
+        assert!(results_recursive.iter().any(|r| r.contains(&format!("{}: ## Search Utility", file1_path.to_str().unwrap()))), 
+                "Missing result for file: {:?}", file1_path);
+        assert!(results_recursive.iter().any(|r| r.contains(&format!("{}: ## Search Utility", file2_path.to_str().unwrap()))), 
+                "Missing result for file: {:?}", file2_path);
+
+        // Test non-recursive search
+        let config_non_recursive = Config {
+            recursive: false,
+            ..config_recursive
+        };
+
+        let files_non_recursive = get_files(&config_non_recursive.files, config_non_recursive.recursive);
+        assert_eq!(files_non_recursive.len(), 1, "Expected 1 file in non-recursive search, found {}", files_non_recursive.len());
+        assert!(files_non_recursive.contains(&file1_path.to_str().unwrap().to_string()), "Missing file: {:?}", file1_path);
+
+        let mut results_non_recursive = Vec::new();
+        for file in &files_non_recursive {
+            search_in_file(file, &config_non_recursive, &mut results_non_recursive).unwrap();
+        }
+
+        assert_eq!(results_non_recursive.len(), 1, "Expected 1 result in non-recursive search, found {}", results_non_recursive.len());
+        assert!(results_non_recursive[0].contains(&format!("{}: ## Search Utility", file1_path.to_str().unwrap())), 
+                "Incorrect result for non-recursive search");
+    }
+
+}
+
