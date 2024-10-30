@@ -1,0 +1,61 @@
+1c1
+< Usage:grep [OPTIONS] <pattern> <files...>
+---
+> Usage: grep [OPTIONS] <pattern> <files...>
+3,9c3,9
+<   -i          Case-insensitive search
+<   -n          Print line numbers
+<   -v          Invert match (exclude lines that match the pattern)
+<   -r          Recursive directory search
+<   -f          Print filenames
+<   -c          Enable colored output
+<   -h, --help  Print help
+---
+> -i                Case-insensitive search
+> -n                Print line numbers
+> -v                Invert match (exclude lines that match the pattern)
+> -r                Recursive directory search
+> -f                Print filenames
+> -c                Enable colored output
+> -h, --help        Show help information
+\ No newline at end of file
+1c1
+< ## Search Utility
+---
+> ## Search Utility
+\ No newline at end of file
+2c2
+< ## Search Utility
+---
+> ## Search Utility
+\ No newline at end of file
+2c2
+< ## Search Utility
+---
+> ## Search Utility
+\ No newline at end of file
+2c2
+< In this programming assignment, you are expected to implement a command-line utility that
+---
+> In this programming assignment, you are expected to implement a command-line utility that
+\ No newline at end of file
+1c1
+< 1: ## Search Utility
+---
+> 1: ## Search Utility
+\ No newline at end of file
+3c3
+< `grep` command.
+---
+> `grep` command.
+\ No newline at end of file
+2c2
+< ## Search Utility
+---
+> ## Search Utility
+\ No newline at end of file
+2c2
+< tests/grep.md: ## Search Utility
+---
+> tests/grep.md: ## Search Utility
+\ No newline at end of file

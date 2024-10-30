@@ -1,0 +1,2 @@
+## Search Utility
+In this programming assignment, you are expected to implement a command-line utility that

@@ -1,0 +1,10 @@
+cargo run -- -h
+cargo run -- Utility tests/grep.md
+cargo run -- Utility tests/grep.md tests/recursive/grep.md
+cargo run -- Utility tests/*.md tests/recursive/*.md
+cargo run -- Utility tests/grep.md -i
+cargo run -- Utility tests/grep.md -n
+cargo run -- Utility tests/grep.md -v
+cargo run -- Utility tests -r
+cargo run -- Utility tests -r -f
+cargo run -- Utility torch/*.py torch/*/*.py -r -f -i
