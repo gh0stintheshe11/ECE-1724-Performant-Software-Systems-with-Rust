@@ -184,3 +184,52 @@ This grep-like utility includes a comprehensive suite of unit tests to ensure it
 - Checks if file paths are correctly reported in the search results.
 
 These tests cover the core functionality of the grep-like utility, ensuring that it behaves correctly under various configurations and search scenarios. They help maintain the reliability and correctness of the tool as we continue to develop and enhance its features.
+
+## Automated Testing Script
+
+The project includes a shell script `run_all_and_compare.sh` that automates testing of the grep utility against a suite of test cases. This script:
+
+1. Extracts test files from `a2-marking-tests.tar.gz`
+2. Creates an `outputs` directory to store test results
+3. Runs 10 different test commands that verify various features:
+   - Basic help output
+   - Single file search
+   - Multiple file search
+   - Wildcard pattern search
+   - Case-insensitive search
+   - Line number display
+   - Inverted match
+   - Recursive search
+   - Filename display
+   - Complex search with multiple options
+
+### Usage
+
+```bash
+# Make the script executable
+chmod +x run_all_and_compare.sh
+
+# Run the test suite
+./run_all_and_compare.sh
+```
+
+### Output
+
+The script generates:
+- Individual test outputs in the `outputs/` directory (output_1.txt through output_10.txt)
+- A `compare.txt` file showing any differences between the actual outputs and expected outputs
+
+### Test Cases
+
+1. `cargo run -- -h`: Tests help message display
+2. `cargo run -- Utility tests/grep.md`: Tests basic single file search
+3. `cargo run -- Utility tests/grep.md tests/recursive/grep.md`: Tests multiple file search
+4. `cargo run -- Utility tests/*.md tests/recursive/*.md`: Tests wildcard pattern matching
+5. `cargo run -- Utility tests/grep.md -i`: Tests case-insensitive search
+6. `cargo run -- Utility tests/grep.md -n`: Tests line number display
+7. `cargo run -- Utility tests/grep.md -v`: Tests inverted match
+8. `cargo run -- Utility tests -r`: Tests recursive directory search
+9. `cargo run -- Utility tests -r -f`: Tests recursive search with filename display
+10. `cargo run -- Utility torch/*.py torch/*/*.py -r -f -i`: Tests complex search with multiple options
+
+The script automatically compares the output of each test case against the expected output stored in `a2-marking-tests/correct-outputs/`.
