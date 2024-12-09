@@ -65,6 +65,7 @@ fn load_data() -> DashMap<String, DashMap<usize, Song>> {
 }
 
 fn save_data(library: &DashMap<String, DashMap<usize, Song>>) {
+    // Collect all songs into a Vec<Song> in parallel
     let all_songs: Vec<Song> = library
         .iter()
         .flat_map(|shard| {
@@ -72,12 +73,18 @@ fn save_data(library: &DashMap<String, DashMap<usize, Song>>) {
                 .value()
                 .iter()
                 .map(|entry| entry.value().clone())
-                .collect::<Vec<_>>() // Collect inner DashMap entries into a Vec
+                .collect::<Vec<_>>() // Collect each genre's songs into a Vec
         })
-        .collect(); // Collect all shards into a single Vec
+        .collect();
 
-    match serde_json::to_string_pretty(&all_songs) {
-        Ok(json) => {
+    // Use rayon for parallel serialization
+    let result = rayon::iter::IntoParallelIterator::into_par_iter(all_songs)
+        .map(|song| serde_json::to_string(&song))
+        .collect::<Result<Vec<_>, _>>();
+
+    match result {
+        Ok(serialized_songs) => {
+            let json = format!("[{}]", serialized_songs.join(","));
             if let Err(e) = fs::write(DATA_FILE, json) {
                 eprintln!("Error writing to songs.json: {}", e);
             }
