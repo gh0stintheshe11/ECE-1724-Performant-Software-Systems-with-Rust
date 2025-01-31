@@ -1,0 +1,9 @@
+[project]
+name = "a4-performance-test"
+version = "0.1.0"
+description = "Performance Testing Suite for Assignment 4"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp"
+]
