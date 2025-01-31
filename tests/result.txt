@@ -1,0 +1,261 @@
+Number of differences for tests/outputs_actual/out0.txt:        0
+Number of differences for tests/outputs_actual/out140.txt:        0
+Number of differences for tests/outputs_actual/out1829.txt:       10
+962,970d961
+<   abcdefgh
+< a BBWWWWW.
+< b BBBWWWWW
+< c BBWBBWWB
+< d BBWBBBBB
+< e BWWBBBBB
+< f BWWWWBBB
+< g BBWWWWBB
+< h BBWBBBBB
+Number of differences for tests/outputs_actual/out2270.txt:        0
+Number of differences for tests/outputs_actual/out33.txt:       10
+524,532d523
+<   abcdefgh
+< a BBBBWWWB
+< b BWBBWWWW
+< c BWBBWBWW
+< d BWBBWWWW
+< e BBWBWWWW
+< f BWBWWWWW
+< g BWWBWW.W
+< h BBBBB..W
+Number of differences for tests/outputs_actual/out40.txt:       20
+488,496d487
+<   abcdefgh
+< a BBBBBBBB
+< b BB.WWWWB
+< c BWWWBWWB
+< d BBBBBWBB
+< e BBWWWBBB
+< f BW.WBWBB
+< g ...BBBBB
+< h ..BBBBBB
+525,533d515
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBBBBB
+< c BBWBBWWB
+< d BBWBBWBB
+< e BBWWWBBB
+< f BBWWBWBB
+< g B..BBBBB
+< h ..BBBBBB
+Number of differences for tests/outputs_actual/out47.txt:       20
+533,541d532
+<   abcdefgh
+< a WBWWWWWW
+< b WBBBBBB.
+< c WBBBBBBW
+< d BBWBBBBW
+< e BBWWBWBW
+< f BBWBWWWW
+< g .WWWWWWW
+< h WWWWWWWW
+552,560d542
+<   abcdefgh
+< a WBWWWWWW
+< b WBBBBBB.
+< c WBBBBBBW
+< d WBWBBBBW
+< e WBWWBWBW
+< f WWWBWWWW
+< g WWWWWWWW
+< h WWWWWWWW
+Number of differences for tests/outputs_actual/out51.txt:       70
+434,442d433
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBWWWW
+< c BBBBBW..
+< d BBBBWWW.
+< e BBBBB...
+< f BBBBWBW.
+< g BBBW..W.
+< h BBBB..W.
+453,461d443
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBWWWW
+< c BBBBBW..
+< d BBBBWWW.
+< e BBBBB...
+< f BBBBWBW.
+< g BBBW..B.
+< h BBBB..WB
+472,480d453
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBWWBB
+< c BBBBBW.B
+< d BBBBWWW.
+< e BBBBB...
+< f BBBBWBW.
+< g BBBW..B.
+< h BBBB..WB
+545,553d517
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBBBBB
+< c BBBBBBWB
+< d BBBBBBW.
+< e BBBBBBW.
+< f BBBBBWWB
+< g BBBBB.B.
+< h BBBBBBBB
+564,572d527
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBBBBB
+< c BBBBBBWB
+< d BBBBBBW.
+< e BBBBBBW.
+< f BBBBBBWB
+< g BBBBBBB.
+< h BBBBBBBB
+583,591d537
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBBBBB
+< c BBBBBBWB
+< d BBBBBBW.
+< e BBBBBBW.
+< f BBBBBBBB
+< g BBBBBBBB
+< h BBBBBBBB
+602,610d547
+<   abcdefgh
+< a BBBBBBBB
+< b BBBBBBBB
+< c BBBBBBWB
+< d BBBBBBB.
+< e BBBBBBBB
+< f BBBBBBBB
+< g BBBBBBBB
+< h BBBBBBBB
+Number of differences for tests/outputs_actual/out54.txt:       10
+542,550d541
+<   abcdefgh
+< a WBBBBBBW
+< b WWBBBBBW
+< c WWBBBWBW
+< d WWWBWBWW
+< e WWBWBBWW
+< f WBWWWBWW
+< g BWWWWWWW
+< h WWW.WBBW
+Number of differences for tests/outputs_actual/out57.txt:      100
+245,253d244
+<   abcdefgh
+< a ........
+< b ........
+< c ......B.
+< d .BBBBBBW
+< e ..BBBBWW
+< f ...BBWBW
+< g ...BBBBW
+< h ..WWWWWW
+282,290d272
+<   abcdefgh
+< a ........
+< b ........
+< c ......BW
+< d .BBBBBWW
+< e ..BBBWWW
+< f ...BWWBW
+< g ..BWWWWW
+< h .BWWWWWW
+391,399d372
+<   abcdefgh
+< a ....B..W
+< b .....B.W
+< c ......BW
+< d .BBBBBWW
+< e .BWWWWWW
+< f BBWWWWBW
+< g BWWWWWWW
+< h WWWWWWWW
+410,418d382
+<   abcdefgh
+< a ....B..W
+< b .....B.W
+< c ......BW
+< d .BBBBBWW
+< e WWWWWWWW
+< f WWWWWWBW
+< g WWWWWWWW
+< h WWWWWWWW
+465,473d428
+<   abcdefgh
+< a W...B..W
+< b W....B.W
+< c W.W...BW
+< d WWWWBBWW
+< e WWWWWWWW
+< f WWWWWWBW
+< g WWWWWWWW
+< h WWWWWWWW
+502,510d456
+<   abcdefgh
+< a W...BWWW
+< b W....BWW
+< c W.W...BW
+< d WWWWBBBW
+< e WWWWWWBW
+< f WWWWWWBW
+< g WWWWWWWW
+< h WWWWWWWW
+521,529d466
+<   abcdefgh
+< a W..WWWWW
+< b W....BWW
+< c W.W...BW
+< d WWWWBBBW
+< e WWWWWWBW
+< f WWWWWWBW
+< g WWWWWWWW
+< h WWWWWWWW
+540,548d476
+<   abcdefgh
+< a W..WWWWW
+< b W...WWWW
+< c W.W...BW
+< d WWWWBBBW
+< e WWWWWWBW
+< f WWWWWWBW
+< g WWWWWWWW
+< h WWWWWWWW
+577,585d504
+<   abcdefgh
+< a WW.WWWWW
+< b W.W.WWWW
+< c W.WW..BW
+< d WWWWWBBW
+< e WWWWWWBW
+< f WWWWWWWW
+< g WWWWWWWW
+< h WWWWWWWW
+596,604d514
+<   abcdefgh
+< a WW.WWWWW
+< b W.W.WWWW
+< c W.WWW.BW
+< d WWWWWWBW
+< e WWWWWWWW
+< f WWWWWWWW
+< g WWWWWWWW
+< h WWWWWWWW
+Number of differences for tests/outputs_actual/out68.txt:       10
+263,271d262
+<   abcdefgh
+< a .....WWW
+< b .....BB.
+< c ...BBBB.
+< d WBBBB...
+< e WWBBBB..
+< f WBBBB...
+< g W.B.B...
+< h W.WWW...
