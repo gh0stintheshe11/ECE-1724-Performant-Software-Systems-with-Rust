@@ -1,0 +1,38 @@
+torch/__init__.py:     r"""SymInt-aware utility for logical negation.
+torch/__init__.py:     r"""SymInt-aware utility for float casting.
+torch/__init__.py:     r"""SymInt-aware utility for int casting.
+torch/__init__.py:     SymInt-aware utility for max which avoids branching on a < b.
+torch/__init__.py:     """SymInt-aware utility for min()."""
+torch/_linalg_utils.py: """Various linear algebra utility methods for internal use."""
+torch/_weights_only_unpickler.py:         # this utility is provided by pytorch
+torch/_decomp/decompositions.py:     """Utility function to implement im2col and col2im"""
+torch/_export/utils.py:     Utility function to query C++ dispatcher to get the all
+torch/_export/utils.py: # TODO (tmanlaibaatar) make this utility function and share it with functional_tensor
+torch/_functorch/pytree_hacks.py: # TODO: remove this file when the migration of the pytree utility is done
+torch/_inductor/cpu_vec_isa.py:     # TorchInductor CPU vectorization reuses PyTorch vectorization utility functions
+torch/_inductor/metrics.py:     An utility to log kernel metadata. We may parse metadata from kernel source code here.
+torch/autograd/function.py:         Shared backward utility.
+torch/autograd/function.py:         Shared forward utility.
+torch/autograd/functional.py: # Utility functions
+torch/autograd/profiler_util.py:     # ignoring the following utility ops
+torch/distributed/launch.py: The utility can be used for single-node distributed training, in which one or
+torch/distributed/launch.py: more processes per node will be spawned. The utility can be used for either
+torch/distributed/launch.py: CPU training or GPU training. If the utility is used for GPU training,
+torch/distributed/launch.py: training, this utility will launch the given number of processes per node
+torch/distributed/launch.py: 1. This utility and multi-process distributed (single-node or
+torch/distributed/launch.py: utility
+torch/distributed/launch.py:     "https://pytorch.org/docs/stable/distributed.html#launch-utility for \n"
+torch/distributed/run.py: 1. This utility and multi-process distributed (single-node or
+torch/distributed/run.py: utility
+torch/distributions/kl.py:     Utility function for calculating x log x
+torch/distributions/kl.py:     Utility function for calculating the trace of XX^{T} with X having arbitrary trailing batch dimensions
+torch/fx/node.py:         utility.
+torch/jit/_trace.py:     # TODO: Consider adding a utility function to torch.jit to test
+torch/masked/_ops.py:     """A utility function called from tools/update_masked_docs.py
+torch/onnx/_deprecation.py: """Utility for deprecating functions."""
+torch/optim/swa_utils.py:         The `update_bn` utility assumes that each data batch in :attr:`loader`
+torch/utils/_content_store.py:     # TODO: factor this into a random utility
+torch/utils/_cxx_pytree.py: Contains utility functions for working with nested python data structures.
+torch/utils/_pytree.py: Contains utility functions for working with nested python data structures.
+torch/utils/file_baton.py:     """A primitive, file-based synchronization utility."""
+torch/utils/mobile_optimizer.py: """This module contains utility method for mobile model optimization and lint."""
